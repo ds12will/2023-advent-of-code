@@ -65,6 +65,16 @@ string UpdateCoordinates(string s)
 
         };
 
+        //oneeight
+        //twoone
+        //threeeight
+        //fiveeight
+        //sevennine
+        //eighttwo
+        //eightthree
+        //nineeight
+
+
         Console.WriteLine(updatedCoordinate);
 
 
