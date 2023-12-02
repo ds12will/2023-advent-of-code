@@ -7,14 +7,11 @@ int total = 0;
 
 foreach (var lineRead in linesRead)
 {
-    bool gameOn = true;
-    gameOn = FindAndPrintPrefix(lineRead, "red", 12);
-    if (gameOn == false) { continue; }
-    gameOn = FindAndPrintPrefix(lineRead, "green", 13);
-    if (gameOn == false) { continue; }
-    gameOn = FindAndPrintPrefix(lineRead, "blue", 14);
-    if (gameOn == false) { continue; }
-    total = total + ParseGame(lineRead);
+   FindAndPrintPrefix(lineRead, "red");
+    FindAndPrintPrefix(lineRead, "green");
+    FindAndPrintPrefix(lineRead, "blue");
+    
+    //total = total + ParseGame(lineRead);
 }
 
 Console.WriteLine(total);
@@ -28,29 +25,30 @@ int ParseGame(string lineOfGame)
 }
 
 
-bool FindAndPrintPrefix(string input, string targetString, int size)
+int FindAndPrintPrefix(string input, string targetString)
 {
     int index = 0;
-    bool gameOn = true;
     var gameNumber = ParseGame(input);
+    int biggestSize = 0;
     while ((index = input.IndexOf(targetString, index)) != -1)
     {
         if (index >= 3)
         {
             string prefix = input.Substring(index - 3, 3);
             //Console.WriteLine("Found at index {0}, prefix: {1}", index, prefix);
-            if (Int32.Parse(prefix) > size)
+            if (Int32.Parse(prefix) > biggestSize)
             {
-                Console.WriteLine("Game {0} wouldn't work", gameNumber);
-                return gameOn = false;
+                //Console.WriteLine("Game {0} wouldn't work", gameNumber);
+                biggestSize = Int32.Parse(prefix);
             }
         }
-        
+
 
         index++;
     }
+    Console.WriteLine("Biggest size for game {0} {1} is {2}", gameNumber, targetString, biggestSize);
 
-    return gameOn;
+    return biggestSize;
 }
 /* 
 Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
