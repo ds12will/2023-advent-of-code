@@ -3,18 +3,23 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
 var linesRead = File.ReadLines("Day2.txt");
-int total = 0;
+int gamePower = 0;
+int gameTotal = 0;
 
 foreach (var lineRead in linesRead)
 {
-   FindAndPrintPrefix(lineRead, "red");
-    FindAndPrintPrefix(lineRead, "green");
-    FindAndPrintPrefix(lineRead, "blue");
+   int red = FindAndPrintPrefix(lineRead, "red");
+    int green = FindAndPrintPrefix(lineRead, "green");
+    int blue = FindAndPrintPrefix(lineRead, "blue");
     
-    //total = total + ParseGame(lineRead);
+    gamePower = red * green * blue;
+    Console.WriteLine ("Game power is {0}", gamePower);
+    gameTotal = gameTotal + gamePower;
 }
 
-Console.WriteLine(total);
+
+
+Console.WriteLine(gameTotal);
 
 int ParseGame(string lineOfGame)
 {
@@ -46,7 +51,7 @@ int FindAndPrintPrefix(string input, string targetString)
 
         index++;
     }
-    Console.WriteLine("Biggest size for game {0} {1} is {2}", gameNumber, targetString, biggestSize);
+    //Console.WriteLine("Biggest size for game {0} {1} is {2}", gameNumber, targetString, biggestSize);
 
     return biggestSize;
 }
