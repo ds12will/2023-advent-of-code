@@ -2,85 +2,59 @@
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
-var linesRead = File.ReadLines("Day1.txt");
+var linesRead = File.ReadLines("Day2.txt");
 int total = 0;
+
 foreach (var lineRead in linesRead)
 {
-    string updatedLineRead = UpdateCoordinates(lineRead);
-    string calibration = string.Concat(updatedLineRead.Where(Char.IsDigit));
-    int first_digit = calibration[0] - '0';
-    int last_digit = calibration[calibration.Length - 1] - '0';
-    int newNumber = Convert.ToInt32(string.Format("{0}{1}", first_digit, last_digit));
-    Console.WriteLine(newNumber);
-    Console.WriteLine("Total is now {0}", total);
-    total = newNumber + total;
+    bool gameOn = true;
+    gameOn = FindAndPrintPrefix(lineRead, "red", 12);
+    if (gameOn == false) { continue; }
+    gameOn = FindAndPrintPrefix(lineRead, "green", 13);
+    if (gameOn == false) { continue; }
+    gameOn = FindAndPrintPrefix(lineRead, "blue", 14);
+    if (gameOn == false) { continue; }
+    total = total + ParseGame(lineRead);
 }
+
 Console.WriteLine(total);
 
-
-//go through each char
-//building a new string
-//does that have one of the following
-//switch statement
-
-string UpdateCoordinates(string s)
+int ParseGame(string lineOfGame)
 {
-    string updatedCoordinate = "";
-
-    foreach (char c in s)
-    {
-        updatedCoordinate = updatedCoordinate + c;
-
-        switch (updatedCoordinate)
-        {
-            case var one when updatedCoordinate.Contains("one"):
-                updatedCoordinate = updatedCoordinate.Replace("one", "e1e");
-                break;
-            case var two when updatedCoordinate.Contains("two"):
-                updatedCoordinate = updatedCoordinate.Replace("two", "o2o");
-                break;
-            case var three when updatedCoordinate.Contains("three"):
-                updatedCoordinate = updatedCoordinate.Replace("three", "e3e");
-                break;
-            case var four when updatedCoordinate.Contains("four"):
-                updatedCoordinate = updatedCoordinate.Replace("four", "r4r");
-                break;
-            case var five when updatedCoordinate.Contains("five"):
-                updatedCoordinate = updatedCoordinate.Replace("five", "e5e");
-                break;
-            case var six when updatedCoordinate.Contains("six"):
-                updatedCoordinate = updatedCoordinate.Replace("six", "x6x");
-                break;
-            case var seven when updatedCoordinate.Contains("seven"):
-                updatedCoordinate = updatedCoordinate.Replace("seven", "n7n");
-                break;
-            case var eight when updatedCoordinate.Contains("eight"):
-                updatedCoordinate = updatedCoordinate.Replace("eight", "t8t");
-                break;
-            case var nine when updatedCoordinate.Contains("nine"):
-                updatedCoordinate = updatedCoordinate.Replace("nine", "e9e");
-                break;
-            default:
-                break;
-
-        };
-
-        //oneeight
-        //twoone
-        //threeeight
-        //fiveeight
-        //sevennine
-        //eighttwo
-        //eightthree
-        //nineeight
-
-
-        Console.WriteLine(updatedCoordinate);
-
-
-
-
-    }
-    return updatedCoordinate;
+    string[] gameText = lineOfGame.Split(":");
+    string[] gameSplit = gameText[0].Split(" ");
+    string gamePoints = gameSplit[1];
+    return Int32.Parse(gamePoints);
 }
 
+
+bool FindAndPrintPrefix(string input, string targetString, int size)
+{
+    int index = 0;
+    bool gameOn = true;
+    var gameNumber = ParseGame(input);
+    while ((index = input.IndexOf(targetString, index)) != -1)
+    {
+        if (index >= 3)
+        {
+            string prefix = input.Substring(index - 3, 3);
+            //Console.WriteLine("Found at index {0}, prefix: {1}", index, prefix);
+            if (Int32.Parse(prefix) > size)
+            {
+                Console.WriteLine("Game {0} wouldn't work", gameNumber);
+                return gameOn = false;
+            }
+        }
+        
+
+        index++;
+    }
+
+    return gameOn;
+}
+/* 
+Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
+Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
+Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
+Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green */
