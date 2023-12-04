@@ -16,7 +16,7 @@ record Pos(int Row, int ColStart, int ColEnd)
 
     record Number(int Value, Pos Pos);
 
-var inputLines = File.ReadLines("Day3.txt");
+        var inputLines = File.ReadLines("Day3.txt");
 
         var symbols = new List<Symbol>();
         var numbers = new List<Number>();
